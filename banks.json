@@ -1,8 +1,8 @@
 [
   {"name": "Fio banka",          "url": "https://www.fio.cz/bankovni-sluzby/sporeni"},
-  {"name": "Air Bank",           "url": "https://www.airbank.cz/sporeni/sporici-ucet/"},
-  {"name": "Raiffeisenbank",     "url": "https://www.rb.cz/osobni/sporeni-a-investice/sporici-ucty"},
-  {"name": "CSOB",               "url": "https://www.csob.cz/portal/lide/produkty/sporeni/sporici-ucet"},
+  {"name": "Air Bank",           "url": "https://www.airbank.cz/file-download/prehled-urokovych-sazeb"},
+  {"name": "Raiffeisenbank",     "url": "https://www.rb.cz/attachments/urokove-sazby/ul-depozita-fo.pdf"},
+  {"name": "CSOB",               "url": "https://www.csob.cz/portal/lide/poplatky-a-sazby/sazby"},
   {"name": "Ceska sporitelna",   "url": "https://www.csas.cz/cs/osobni-finance/sporeni"},
   {"name": "mBank",              "url": "https://www.mbank.cz/osobni/sporeni/"}
 ]
