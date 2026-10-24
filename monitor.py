@@ -17,6 +17,7 @@ Výstupy: rates.json (aktuální stav), history.json (historie a změny),
 E-mail se posílá jen když jsou nastavené secrets SMTP_USER, SMTP_PASSWORD a MAIL_TO.
 """
 import io, json, os, re, smtplib, sys
+from difflib import SequenceMatcher
 from datetime import date
 from email.message import EmailMessage
 from pathlib import Path
@@ -51,14 +52,30 @@ Pokud je stejný produkt ve více pásmech nebo variantách, odliš je krátkým
 Nic si nedomýšlej. Když údaj na stránce není, dej null. Když nic z požadovaného nenajdeš, vrať []."""
 
 
+def pdf_text(data: bytes) -> str:
+    """Text z PDF se zachovaným rozložením tabulek (sloupce oddělené ' | ')."""
+    reader = PdfReader(io.BytesIO(data))
+    pages = []
+    for page in reader.pages:
+        try:
+            t = page.extract_text(extraction_mode="layout")
+        except TypeError:  # starší pypdf
+            t = page.extract_text()
+        pages.append(t or "")
+    lines = []
+    for line in "\n".join(pages).splitlines():
+        line = re.sub(r" {2,}", " | ", line.strip())
+        if line:
+            lines.append(line)
+    return "\n".join(lines)
+
+
 def fetch_text(url: str) -> str:
     r = requests.get(url, headers=HEADERS, timeout=30)
     r.raise_for_status()
     ctype = r.headers.get("content-type", "").lower()
     if "pdf" in ctype or url.lower().split("?")[0].endswith(".pdf") or r.content[:4] == b"%PDF":
-        reader = PdfReader(io.BytesIO(r.content))
-        text = " ".join((page.extract_text() or "") for page in reader.pages)
-        return re.sub(r"\s+", " ", text).strip()[:MAX_CHARS]
+        return pdf_text(r.content)[:MAX_CHARS]
     soup = BeautifulSoup(r.text, "html.parser")
     for tag in soup(["script", "style", "noscript", "nav", "footer", "header", "svg"]):
         tag.decompose()
@@ -68,16 +85,24 @@ def fetch_text(url: str) -> str:
 
 def extract_rates(client: Anthropic, bank: dict, text: str) -> list[dict]:
     prompt = PROMPT.replace("{FOCUS}", bank.get("focus") or "všechny spořicí účty pro fyzické osoby")
-    msg = client.messages.create(
-        model=bank.get("model", MODEL),
-        max_tokens=2500,
-        messages=[{"role": "user", "content": f"{prompt}\n\nBanka: {bank['name']}\n\nText stránky:\n{text}"}],
-    )
-    raw = "".join(b.text for b in msg.content if b.type == "text")
-    start, end = raw.find("["), raw.rfind("]")
-    if start == -1 or end == -1:
-        raise ValueError("Odpověď modelu neobsahuje JSON pole")
-    return json.loads(raw[start : end + 1])
+    content = f"{prompt}\n\nBanka: {bank['name']}\n\nText stránky:\n{text}"
+    last = ""
+    for attempt in range(2):
+        extra = "" if attempt == 0 else "\n\nPOZOR: odpověz výhradně JSON polem, které začíná znakem [ a nemá žádný další text."
+        msg = client.messages.create(
+            model=bank.get("model", MODEL),
+            max_tokens=2500,
+            messages=[{"role": "user", "content": content + extra}],
+        )
+        raw = "".join(b.text for b in msg.content if b.type == "text")
+        start, end = raw.find("["), raw.rfind("]")
+        if start != -1 and end > start:
+            try:
+                return json.loads(raw[start : end + 1])
+            except json.JSONDecodeError:
+                pass
+        last = raw
+    raise ValueError("Odpověď modelu není platný JSON: " + re.sub(r"\s+", " ", last)[:110])
 
 
 def num(v) -> str:
@@ -94,20 +119,39 @@ def best_rate(products: list[dict]):
     return max(rated, key=lambda x: x[0]) if rated else (None, None)
 
 
+def _numbers(p: dict):
+    return (p.get("base_rate_pct"), p.get("bonus_rate_pct"), p.get("limit_czk"))
+
+
 def diff(old: list[dict], new: list[dict]) -> list[str]:
-    o = {p["product"]: p for p in old}
-    n = {p["product"]: p for p in new}
+    """Porovná produkty dvou běhů. Názvy od modelu mírně kolísají, proto se produkty
+    párují podle podobnosti názvu a shody čísel, ne podle přesného názvu."""
+    pairs = []
+    for i, o in enumerate(old):
+        for j, n in enumerate(new):
+            score = SequenceMatcher(None, o["product"].lower(), n["product"].lower()).ratio()
+            if _numbers(o) == _numbers(n):
+                score += 0.5
+            pairs.append((score, i, j))
+    pairs.sort(reverse=True)
+    used_o, used_n, matched = set(), set(), []
+    for score, i, j in pairs:
+        if score >= 0.6 and i not in used_o and j not in used_n:
+            used_o.add(i)
+            used_n.add(j)
+            matched.append((i, j))
     out = []
-    for name, p in n.items():
-        if name not in o:
-            out.append(f"NOVÝ produkt/pásmo „{name}“: základ {num(p.get('base_rate_pct'))} %, celkem {num(p.get('bonus_rate_pct'))} %")
-            continue
+    for i, j in matched:
+        o, n = old[i], new[j]
         for key, label in (("base_rate_pct", "základní sazba"), ("bonus_rate_pct", "celková sazba"), ("limit_czk", "limit")):
-            if o[name].get(key) != p.get(key):
-                out.append(f"„{name}“ – {label}: {num(o[name].get(key))} → {num(p.get(key))}")
-    for name in o:
-        if name not in n:
-            out.append(f"Produkt/pásmo „{name}“ zmizelo ze stránky")
+            if o.get(key) != n.get(key):
+                out.append(f"„{n['product']}“ – {label}: {num(o.get(key))} → {num(n.get(key))}")
+    for j, n in enumerate(new):
+        if j not in used_n:
+            out.append(f"NOVÝ produkt/pásmo „{n['product']}“: základ {num(n.get('base_rate_pct'))} %, celkem {num(n.get('bonus_rate_pct'))} %")
+    for i, o in enumerate(old):
+        if i not in used_o:
+            out.append(f"Produkt/pásmo „{o['product']}“ zmizelo ze stránky")
     return out
 
 
