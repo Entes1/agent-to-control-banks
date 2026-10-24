@@ -1,8 +1,45 @@
 [
-  {"name": "Fio banka",          "url": "https://www.fio.cz/bankovni-sluzby/sporeni"},
-  {"name": "Air Bank",           "url": "https://www.airbank.cz/file-download/prehled-urokovych-sazeb"},
-  {"name": "Raiffeisenbank",     "url": "https://www.rb.cz/attachments/urokove-sazby/ul-depozita-fo.pdf"},
-  {"name": "CSOB",               "url": "https://www.csob.cz/portal/lide/poplatky-a-sazby/sazby"},
-  {"name": "Ceska sporitelna",   "url": "https://www.csas.cz/cs/osobni-finance/sporeni"},
-  {"name": "mBank",              "url": "https://www.mbank.cz/osobni/sporeni/"}
+  {
+    "name": "mBank",
+    "role": "mine",
+    "url": "https://www.mbank.cz/osobni/sporeni/",
+    "focus": "mSpořicí účet Plus (všechna pásma zůstatku, podmínky) a mSpořicí účet bez podmínek; dětské účty vynech"
+  },
+  {
+    "name": "Raiffeisenbank",
+    "role": "mine",
+    "url": "https://www.rb.cz/attachments/urokove%20sazby/ul-depozita-fo.pdf",
+    "model": "claude-sonnet-5-5",
+    "focus": "Bonusový spořicí účet: celková maximální sazba pro každé pásmo zůstatku (0-500 000, 500 000-5 000 000 ...) a tarif běžného účtu (Exkluzivní, Aktivní, Chytrý/jiný), plus Základní spořicí účet"
+  },
+  {
+    "name": "Trinity Bank",
+    "role": "mine",
+    "url": "https://finex.cz/banka/trinity-bank/skvely-sporici-ucet-trinity-bank/",
+    "focus": "Narozeninový spořicí účet: sazba pro jednotlivá pásma zůstatku a podmínky (zdroj je třetí strana)"
+  },
+  {
+    "name": "Fio Konto",
+    "role": "mine",
+    "url": "https://www.fio.cz/bankovni-sluzby/sporeni/sporici-ucet-fio-konto",
+    "focus": "Fio konto: sazba do limitu 200 000 Kč a sazba nad limitem"
+  },
+  {
+    "name": "Partners Banka",
+    "role": "candidate",
+    "url": "https://finex.cz/banka/partners-banka/sporici-ucet-partners-banka/",
+    "focus": "Spořicí účet: nejvyšší dosažitelná sazba a podmínky (zdroj je třetí strana)"
+  },
+  {
+    "name": "Komerční banka",
+    "role": "candidate",
+    "url": "https://finex.cz/banka/komercni-banka/komercni-banka-sporici-ucet/",
+    "focus": "Spořicí účet KB (ne dětský): nejvyšší bonusová sazba, pásma a podmínky (zdroj je třetí strana)"
+  },
+  {
+    "name": "Air Bank",
+    "role": "candidate",
+    "url": "https://www.airbank.cz/file-download/prehled-urokovych-sazeb",
+    "focus": "Spořicí účet v Kč: základní a bonusová sazba a limity (jen běžný spořicí účet pro dospělé)"
+  }
 ]

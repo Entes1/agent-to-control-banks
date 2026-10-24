@@ -71,7 +71,6 @@ def extract_rates(client: Anthropic, bank: dict, text: str) -> list[dict]:
     msg = client.messages.create(
         model=bank.get("model", MODEL),
         max_tokens=2500,
-        temperature=0,
         messages=[{"role": "user", "content": f"{prompt}\n\nBanka: {bank['name']}\n\nText stránky:\n{text}"}],
     )
     raw = "".join(b.text for b in msg.content if b.type == "text")
