@@ -1,0 +1,17 @@
+{
+ "snapshots": [
+  {
+   "date": "2026-10-24",
+   "banks": {
+    "mBank": 4.21,
+    "Raiffeisenbank": null,
+    "Trinity Bank": 4.28,
+    "Fio Konto": 3.5,
+    "Partners Banka": 3.2,
+    "Komerční banka": 3.5,
+    "Air Bank": null
+   }
+  }
+ ],
+ "events": []
+}
