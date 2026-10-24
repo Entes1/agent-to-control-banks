@@ -120,12 +120,13 @@ def best_rate(products: list[dict]):
 
 
 def _numbers(p: dict):
-    return (p.get("base_rate_pct"), p.get("bonus_rate_pct"), p.get("limit_czk"))
+    return (effective_rate(p), p.get("limit_czk"))
 
 
 def diff(old: list[dict], new: list[dict]) -> list[str]:
-    """Porovná produkty dvou běhů. Názvy od modelu mírně kolísají, proto se produkty
-    párují podle podobnosti názvu a shody čísel, ne podle přesného názvu."""
+    """Porovná produkty dvou čtení. Názvy od modelu mírně kolísají a sazba se někdy přesune
+    mezi polem základní/celková, proto se produkty párují podle podobnosti názvu a shody čísel
+    a porovnává se účinná sazba (celková, jinak základní)."""
     pairs = []
     for i, o in enumerate(old):
         for j, n in enumerate(new):
@@ -143,12 +144,13 @@ def diff(old: list[dict], new: list[dict]) -> list[str]:
     out = []
     for i, j in matched:
         o, n = old[i], new[j]
-        for key, label in (("base_rate_pct", "základní sazba"), ("bonus_rate_pct", "celková sazba"), ("limit_czk", "limit")):
-            if o.get(key) != n.get(key):
-                out.append(f"„{n['product']}“ – {label}: {num(o.get(key))} → {num(n.get(key))}")
+        if effective_rate(o) != effective_rate(n):
+            out.append(f"„{n['product']}“ – sazba: {num(effective_rate(o))} → {num(effective_rate(n))}")
+        if o.get("limit_czk") is not None and n.get("limit_czk") is not None and o["limit_czk"] != n["limit_czk"]:
+            out.append(f"„{n['product']}“ – limit: {num(o['limit_czk'])} → {num(n['limit_czk'])}")
     for j, n in enumerate(new):
         if j not in used_n:
-            out.append(f"NOVÝ produkt/pásmo „{n['product']}“: základ {num(n.get('base_rate_pct'))} %, celkem {num(n.get('bonus_rate_pct'))} %")
+            out.append(f"NOVÝ produkt/pásmo „{n['product']}“: sazba {num(effective_rate(n))} %")
     for i, o in enumerate(old):
         if i not in used_o:
             out.append(f"Produkt/pásmo „{o['product']}“ zmizelo ze stránky")
@@ -242,11 +244,18 @@ def main() -> None:
                 raise ValueError("Nenalezen žádný produkt (stránka se asi změnila nebo se načítá přes JavaScript)")
             if all(p.get("base_rate_pct") is None and p.get("bonus_rate_pct") is None for p in products):
                 raise ValueError("Na stránce nejsou uvedeny žádné sazby – je potřeba jiná adresa (např. PDF s přehledem sazeb)")
-            if entry["products"]:
-                found = [f"[{name}] {c}" for c in diff(entry["products"], products)]
-                changes += found
-                mine_changed = mine_changed or (role == "mine" and bool(found))
-            entry["products"], entry["fail_count"] = products, 0
+            found = diff(entry["products"], products) if entry["products"] else []
+            pending = entry.get("pending")
+            if found and pending is not None and not diff(pending, products):
+                # stejná změna při dvou čteních po sobě = potvrzená
+                changes += [f"[{name}] {c}" for c in found]
+                mine_changed = mine_changed or role == "mine"
+                entry["products"], entry["pending"] = products, None
+            elif found:
+                entry["pending"] = products  # čeká na potvrzení při dalším běhu, základ se nemění
+            else:
+                entry["products"], entry["pending"] = products, None
+            entry["fail_count"] = 0
             entry["last_ok"], entry["last_error"] = today, None
         except Exception as e:  # noqa: BLE001
             print(f"CHYBA {name}: {e}", file=sys.stderr)
