@@ -1,0 +1,16 @@
+{
+ "snapshots": [
+  {
+   "date": "2026-10-24",
+   "banks": {
+    "Fio banka": null,
+    "Air Bank": 3.2,
+    "Raiffeisenbank": null,
+    "CSOB": null,
+    "Ceska sporitelna": null,
+    "mBank": 5.01
+   }
+  }
+ ],
+ "events": []
+}

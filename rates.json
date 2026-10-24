@@ -17,7 +17,8 @@
           "conditions": "Spořicí účet bez omezení výše vkladu pro fyzické i právnické osoby. Úroková sazba na stránce uvedena není."
         }
       ],
-      "fail_count": 0
+      "fail_count": 1,
+      "last_error": "Messages.create() got an unexpected keyword argument 'temperature'"
     },
     "Air Bank": {
       "products": [
@@ -43,15 +44,18 @@
           "conditions": "Bonusovou sazbu podle marketingové akce nenabízíme."
         }
       ],
-      "fail_count": 0
+      "fail_count": 1,
+      "last_error": "Messages.create() got an unexpected keyword argument 'temperature'"
     },
     "Raiffeisenbank": {
       "products": [],
-      "fail_count": 1
+      "fail_count": 2,
+      "last_error": "Messages.create() got an unexpected keyword argument 'temperature'"
     },
     "CSOB": {
       "products": [],
-      "fail_count": 1
+      "fail_count": 2,
+      "last_error": "Messages.create() got an unexpected keyword argument 'temperature'"
     },
     "Ceska sporitelna": {
       "products": [
@@ -70,7 +74,8 @@
           "conditions": "Při pravidelném spoření dítěte získá výhodnější úrokovou sazbu; konkrétní sazba ani limit nejsou uvedeny."
         }
       ],
-      "fail_count": 0
+      "fail_count": 1,
+      "last_error": "Messages.create() got an unexpected keyword argument 'temperature'"
     },
     "mBank": {
       "products": [
@@ -101,8 +106,10 @@
           "conditions": "Úrok platný do odvolání, minimálně do 30. 11. 2026. Spoří se s každou platbou, bez nutnosti dalších podmínek."
         }
       ],
-      "fail_count": 0
+      "fail_count": 1,
+      "last_error": "Messages.create() got an unexpected keyword argument 'temperature'"
     }
   },
-  "last_run": "2026-10-24"
+  "last_run": "2026-10-24",
+  "overtake": {}
 }
