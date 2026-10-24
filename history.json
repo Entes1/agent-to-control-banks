@@ -5,7 +5,7 @@
    "banks": {
     "mBank": 4.21,
     "Raiffeisenbank": 4.2,
-    "Trinity Bank": 3.3,
+    "Trinity Bank": 4.28,
     "Fio Konto": 3.5,
     "Partners Banka": 3.2,
     "Komerční banka": 3.5,
@@ -13,5 +13,11 @@
    }
   }
  ],
- "events": []
+ "events": [
+  {
+   "date": "2026-10-24",
+   "kind": "change",
+   "text": "[Trinity Bank] NOVÝ produkt/pásmo „Narozeninový spořicí účet (do 200 tis.)“: sazba 4,28 %"
+  }
+ ]
 }
