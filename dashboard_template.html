@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spořicí účty – přehled sazeb</title>
+<style>
+:root{
+  --bg:#f4f6f8; --ink:#1b2733; --muted:#5b6b79; --rule:#d5dce3; --panel:#ffffff;
+  --mine:#0e6b6b; --cand:#7a8794; --alert:#b8236b;
+  --s0:#0e6b6b; --s1:#2f5da8; --s2:#8a5a00; --s3:#7b3fa0; --s4:#b8236b; --s5:#4b7f2a; --s6:#5a6b79;
+  --serif: Charter, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --sans: ui-sans-serif, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#10181f; --ink:#e6edf2; --muted:#9aa9b6; --rule:#2a3641; --panel:#16212a;
+    --mine:#4fc3be; --cand:#8fa0ae; --alert:#f06bae;
+    --s0:#4fc3be; --s1:#7aa5ee; --s2:#e0b35a; --s3:#c394e6; --s4:#f06bae; --s5:#97cf6e; --s6:#9aa9b6;
+  }
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--ink);font:16px/1.5 var(--sans);
+  padding:max(1.25rem,env(safe-area-inset-top)) max(1.1rem,env(safe-area-inset-right)) max(2.5rem,env(safe-area-inset-bottom)) max(1.1rem,env(safe-area-inset-left));
+  font-variant-numeric:tabular-nums}
+main{max-width:46rem;margin:0 auto}
+h1{font:600 .95rem/1.2 var(--sans);color:var(--muted);margin:0 0 .6rem;letter-spacing:.01em}
+.lead{font:500 1.55rem/1.3 var(--serif);margin:0 0 .5rem;max-width:34rem}
+.lead b{font-weight:700}
+.upd{color:var(--muted);font-size:.875rem;margin:0 0 2rem}
+h2{font:600 1.2rem/1.25 var(--serif);margin:2.6rem 0 .9rem}
+.note{color:var(--muted);font-size:.875rem;margin:.7rem 0 0}
+.empty{color:var(--muted);margin:0}
+
+/* žebříček */
+.ladder{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:1fr auto;grid-template-areas:"nm val" "track track";gap:.15rem .75rem;padding:.7rem 0;border-top:1px solid var(--rule)}
+.row:last-child{border-bottom:1px solid var(--rule)}
+.nm{grid-area:nm;font-weight:600}
+.nm small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.val{grid-area:val;font-weight:700;text-align:right}
+.track{grid-area:track;position:relative;height:.9rem;margin-top:.2rem}
+.bar{height:100%;border-radius:2px;background:var(--mine)}
+.cand .bar{background:repeating-linear-gradient(135deg,transparent 0 4px,color-mix(in srgb,var(--cand) 55%,transparent) 4px 6px);border:1.5px solid var(--cand)}
+.over .bar{background:var(--alert);border:0}
+.over .val,.over .nm small{color:var(--alert)}
+.nodata .val{color:var(--muted);font-weight:400}
+.mark{position:absolute;top:-.35rem;bottom:-.35rem;width:0;border-left:2px dashed var(--ink);opacity:.7}
+@media (min-width:34rem){
+  .row{grid-template-columns:9.5rem 1fr 4.6rem;grid-template-areas:"nm track val";align-items:center}
+  .track{margin-top:0}
+}
+
+/* účty */
+.bank{padding:1rem 0;border-top:1px solid var(--rule)}
+.bank:last-child{border-bottom:1px solid var(--rule)}
+.bank h3{font:600 1.05rem/1.3 var(--sans);margin:0}
+.bhead{display:flex;flex-wrap:wrap;gap:.2rem .8rem;align-items:baseline;margin-bottom:.3rem}
+.src,.ok{font-size:.8rem;color:var(--muted)}
+.warn{margin:.4rem 0;padding:.5rem .7rem;border-left:3px solid var(--alert);background:var(--panel);font-size:.875rem}
+.prods{list-style:none;margin:0;padding:0}
+.prods li{padding:.55rem 0;display:grid;grid-template-columns:1fr auto;gap:0 1rem}
+.prods li+li{border-top:1px dotted var(--rule)}
+.pn{font-weight:500}
+.pr{font-weight:700;text-align:right}
+.pm{grid-column:1/-1;color:var(--muted);font-size:.85rem}
+details{grid-column:1/-1;font-size:.85rem;color:var(--muted)}
+summary{cursor:pointer;margin-top:.15rem;width:max-content;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
+summary:focus-visible,a:focus-visible{outline:2px solid var(--mine);outline-offset:3px}
+details p{margin:.35rem 0 0;max-width:36rem}
+
+/* graf */
+#chart svg{width:100%;height:auto;display:block;overflow:visible}
+.gl{stroke:var(--rule);stroke-width:1}
+.gt{fill:var(--muted);font-size:11px}
+.sl{fill:none;stroke-linejoin:round}
+
+/* změny */
+.events{list-style:none;margin:0;padding:0}
+.events li{padding:.6rem 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:5.2rem 1fr;gap:.6rem}
+.events li:last-child{border-bottom:1px solid var(--rule)}
+.events time{color:var(--muted);font-size:.85rem}
+.events .over-ev{color:var(--alert);font-weight:600}
+footer{margin-top:3rem;color:var(--muted);font-size:.8rem}
+</style>
+</head>
+<body>
+<main>
+  <h1>Spořicí účty</h1>
+  <p class="lead" id="lead"></p>
+  <p class="upd" id="upd"></p>
+
+  <h2>Kdo nabízí nejvíc</h2>
+  <ul class="ladder" id="ladder"></ul>
+  <p class="note" id="ladnote"></p>
+
+  <h2>Moje spoření</h2>
+  <div id="mine"></div>
+
+  <h2>Kandidáti</h2>
+  <div id="cands"></div>
+
+  <h2>Vývoj nejvyšší sazby</h2>
+  <div id="chart"></div>
+
+  <h2>Poslední změny</h2>
+  <ul class="events" id="events"></ul>
+
+  <footer>Údaje čte automaticky skript z webů bank, u některých bank ze srovnávače. Před rozhodnutím vždy ověř sazbu a podmínky u banky.</footer>
+</main>
+
+<script>
+const D = /*__DATA__*/null;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct = v => v == null ? "–" : v.toLocaleString("cs-CZ",{minimumFractionDigits:2,maximumFractionDigits:2}) + " %";
+const limitTxt = v => v == null ? "limit neuveden" : "limit do " + (v >= 1e6 ? (v/1e6).toLocaleString("cs-CZ") + " mil." : (v/1e3).toLocaleString("cs-CZ") + " tis.") + " Kč";
+const dateTxt = iso => iso ? new Date(iso + "T12:00:00").toLocaleDateString("cs-CZ",{day:"numeric",month:"numeric",year:"numeric"}) : "";
+const eff = p => p.bonus_rate_pct ?? p.base_rate_pct;
+
+const withData = D.banks.filter(b => b.best);
+const mine = withData.filter(b => b.role === "mine");
+const mineBest = mine.reduce((a, b) => (!a || b.best.rate > a.best.rate) ? b : a, null);
+const over = mineBest ? withData.filter(b => b.role === "candidate" && b.best.rate > mineBest.best.rate) : [];
+
+function lead(){
+  const el = $("#lead");
+  if (!mineBest){ el.textContent = "Zatím tu nejsou žádná data. Spusť workflow v GitHub Actions."; return; }
+  let h = `Nejvyšší sazbu máš u banky <b>${esc(mineBest.name)}</b>: ${pct(mineBest.best.rate)}.`;
+  if (over.length){
+    h += " " + over.map(b => `<b>${esc(b.name)}</b> nabízí víc (${pct(b.best.rate)})`).join(", ") + ", zkontroluj limit a podmínky.";
+  } else {
+    h += " Žádný z kandidátů ji nepředběhl.";
+  }
+  el.innerHTML = h;
+  $("#upd").textContent = "Aktualizováno " + dateTxt(D.updated) + ".";
+}
+
+function ladder(){
+  const ul = $("#ladder");
+  if (!withData.length){ ul.innerHTML = '<li class="empty">Žádná banka zatím nevrátila sazbu.</li>'; return; }
+  const max = Math.max(5, Math.ceil(Math.max(...withData.map(b => b.best.rate))));
+  const markPct = mineBest ? (mineBest.best.rate / max * 100) : null;
+  const sorted = D.banks.slice().sort((a, b) => (b.best ? b.best.rate : -1) - (a.best ? a.best.rate : -1));
+  ul.innerHTML = sorted.map(b => {
+    const isOver = over.includes(b);
+    const cls = b.best ? (isOver ? "over" : (b.role === "mine" ? "mine" : "cand")) : "nodata";
+    const label = b.role === "mine" ? "moje spoření" : (isOver ? "kandidát, předběhl tvoje" : "kandidát");
+    const bar = b.best ? `<div class="bar" style="width:${(b.best.rate / max * 100).toFixed(1)}%"></div>` : "";
+    const mark = markPct != null ? `<i class="mark" style="left:${markPct.toFixed(1)}%"></i>` : "";
+    return `<li class="row ${cls}"><div class="nm">${esc(b.name)}<small>${label}</small></div><div class="track">${bar}${mark}</div><div class="val">${b.best ? pct(b.best.rate) : "bez dat"}</div></li>`;
+  }).join("");
+  $("#ladnote").textContent = mineBest
+    ? `Přerušovaná čára je tvoje nejlepší sazba (${mineBest.name}, ${pct(mineBest.best.rate)}). Porovnává se nejvyšší sazba, bez ohledu na limit a podmínky.`
+    : "";
+}
+
+function bankHtml(b){
+  const src = b.thirdParty ? "zdroj: srovnávač, může zaostávat" : "zdroj: banka";
+  let warn = "";
+  if (b.failCount > 0){
+    warn = `<p class="warn">Poslední načtení se nepovedlo${b.lastError ? " (" + esc(b.lastError) + ")" : ""}. ${b.lastOk ? "Zobrazují se údaje z " + dateTxt(b.lastOk) + "." : "Zatím nejsou žádná data."}</p>`;
+  }
+  const prods = (b.products || []).map(p => {
+    const sub = [p.base_rate_pct != null ? "základ " + pct(p.base_rate_pct) : null, limitTxt(p.limit_czk)].filter(Boolean).join(", ");
+    const cond = p.conditions ? `<details><summary>podmínky</summary><p>${esc(p.conditions)}</p></details>` : "";
+    return `<li><div class="pn">${esc(p.product)}</div><div class="pr">${pct(eff(p))}</div><div class="pm">${esc(sub)}</div>${cond}</li>`;
+  }).join("");
+  return `<article class="bank"><div class="bhead"><h3>${esc(b.name)}</h3><span class="src">${src}</span>${b.lastOk ? `<span class="ok">načteno ${dateTxt(b.lastOk)}</span>` : ""}</div>${warn}${prods ? `<ul class="prods">${prods}</ul>` : '<p class="empty">Zatím bez dat.</p>'}</article>`;
+}
+function banks(){
+  $("#mine").innerHTML = D.banks.filter(b => b.role === "mine").map(bankHtml).join("") || '<p class="empty">V banks.json není žádná banka s rolí „mine".</p>';
+  $("#cands").innerHTML = D.banks.filter(b => b.role === "candidate").map(bankHtml).join("") || '<p class="empty">V banks.json není žádný kandidát.</p>';
+}
+
+function chart(){
+  const el = $("#chart"), S = D.snapshots || [];
+  if (S.length < 2){
+    el.innerHTML = '<p class="empty">Graf se začne kreslit od druhého dne běhu. Zatím je uložený ' + S.length + ' den.</p>';
+    return;
+  }
+  const names = D.banks.map(b => b.name);
+  const t = s => new Date(s.date + "T12:00:00").getTime();
+  const t0 = t(S[0]), t1 = t(S[S.length - 1]);
+  const vals = [];
+  S.forEach(s => names.forEach(n => { if (s.banks[n] != null) vals.push(s.banks[n]); }));
+  if (!vals.length){ el.innerHTML = '<p class="empty">Zatím nejsou data pro graf.</p>'; return; }
+  const lo = Math.floor((Math.min(...vals) - 0.2) * 2) / 2, hi = Math.ceil((Math.max(...vals) + 0.2) * 2) / 2;
+  const W = 640, H = 270, L = 40, R = 116, T = 14, B = 28;
+  const x = ts => L + (W - L - R) * ((ts - t0) / ((t1 - t0) || 1));
+  const y = v => T + (H - T - B) * (1 - (v - lo) / ((hi - lo) || 1));
+  let g = "";
+  for (let v = lo; v <= hi + 1e-9; v += 0.5){
+    g += `<line class="gl" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="gt" x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${v.toLocaleString("cs-CZ",{minimumFractionDigits:1})}</text>`;
+  }
+  const labels = [];
+  names.forEach((n, i) => {
+    const bank = D.banks[i];
+    const pts = S.filter(s => s.banks[n] != null).map(s => [x(t(s)), y(s.banks[n]), s.banks[n]]);
+    if (!pts.length) return;
+    let d = `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+    for (let k = 1; k < pts.length; k++) d += ` H${pts[k][0].toFixed(1)} V${pts[k][1].toFixed(1)}`;
+    d += ` H${x(t1).toFixed(1)}`;
+    const mineLine = bank.role === "mine";
+    g += `<path class="sl" d="${d}" stroke="var(--s${i % 7})" stroke-width="${mineLine ? 2.6 : 1.8}" ${mineLine ? "" : 'stroke-dasharray="5 4"'}/>`;
+    labels.push({n, y: pts[pts.length - 1][1], c: `var(--s${i % 7})`});
+  });
+  labels.sort((a, b) => a.y - b.y);
+  for (let k = 1; k < labels.length; k++) if (labels[k].y - labels[k - 1].y < 13) labels[k].y = labels[k - 1].y + 13;
+  labels.forEach(l => { g += `<text x="${W - R + 8}" y="${l.y + 4}" font-size="11" fill="${l.c}" font-weight="600">${esc(l.n)}</text>`; });
+  g += `<text class="gt" x="${L}" y="${H - 8}">${dateTxt(S[0].date)}</text><text class="gt" x="${W - R}" y="${H - 8}" text-anchor="end">${dateTxt(S[S.length - 1].date)}</text>`;
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Vývoj nejvyšší sazby u jednotlivých bank">${g}</svg><p class="note">Plná čára jsou tvoje banky, přerušovaná kandidáti. Hodnoty jsou nejvyšší sazba v % p. a.</p>`;
+}
+
+function events(){
+  const ev = (D.events || []).slice().reverse().slice(0, 30);
+  $("#events").innerHTML = ev.length
+    ? ev.map(e => `<li><time>${dateTxt(e.date)}</time><span class="${e.kind === "overtake" ? "over-ev" : ""}">${esc(e.text)}</span></li>`).join("")
+    : '<li class="empty">Zatím žádné změny. Když banka změní sazbu, objeví se tady.</li>';
+}
+
+lead(); ladder(); banks(); chart(); events();
+</script>
+</body>
+</html>
