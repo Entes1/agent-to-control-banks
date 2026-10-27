@@ -7,57 +7,57 @@
           "base_rate_pct": null,
           "bonus_rate_pct": 4.21,
           "limit_czk": null,
-          "conditions": "Min. 15 000 Kč měsíčně na mKonto a min. 5 plateb kartou ve stejném měsíci (#navlastnitriko: 5 plateb). Platí do odvolání, min. do 30. 11. 2026."
+          "conditions": "Bonus za aktivitu: na mKonto měsíčně alespoň 15 000 Kč příchozích a alespoň 5 plateb kartou ve stejném měsíci (u #navlastnitriko 5 plateb kartou). Aktivní klienti prvé 3 měsíce bez podmínek."
         },
         {
           "product": "mSpořicí účet",
           "base_rate_pct": 3.01,
-          "bonus_rate_pct": null,
+          "bonus_rate_pct": 3.01,
           "limit_czk": null,
-          "conditions": "Bez podmínek a bez limitu na výši úspor. Platí do odvolání, min. do 30. 11. 2026."
+          "conditions": "Bez podmínek a bez limitu na výši úspor."
         }
       ],
       "fail_count": 0,
-      "last_ok": "2026-10-26",
+      "last_ok": "2026-10-27",
       "last_error": null,
       "pending": null
     },
     "Raiffeisenbank": {
       "products": [
         {
-          "product": "Bonusový spořicí účet – Exkluzivní (do 500 tis.)",
+          "product": "Bonusový spořicí účet Exkluzivní (do 500 tis.)",
           "base_rate_pct": 0.1,
           "bonus_rate_pct": 4.2,
           "limit_czk": 500000,
-          "conditions": "Celková max. sazba = základní 0,10 % + 3,90 % za platby kartou + 0,20 % za investice; vyhodnocení po konci měsíce. Tarif Exkluzivní."
+          "conditions": "Základ 0,10 % + 3,90 % za platby kartou + 0,20 % za investice. Vyhodnocení po konci měsíce. Sazby platné od 1. 10. 2026."
         },
         {
-          "product": "Bonusový spořicí účet – Exkluzivní (500 tis.–5 mil.)",
+          "product": "Bonusový spořicí účet Exkluzivní (500 tis. - 5 mil.)",
           "base_rate_pct": 0.1,
           "bonus_rate_pct": 3.0,
           "limit_czk": 5000000,
-          "conditions": "Celková max. sazba = základní 0,10 % + 2,90 % za platby kartou; investice 0,00 %. Tarif Exkluzivní. Nad limit 0,01 %."
+          "conditions": "Základ 0,10 % + 2,90 % za platby kartou; za investice 0,00 %. Vyhodnocení po konci měsíce. Nad limit 0,01 %."
         },
         {
-          "product": "Bonusový spořicí účet – Aktivní (do 500 tis.)",
+          "product": "Bonusový spořicí účet Aktivní (do 500 tis.)",
           "base_rate_pct": 0.1,
           "bonus_rate_pct": 4.2,
           "limit_czk": 500000,
-          "conditions": "Celková max. sazba = základní 0,10 % + 3,90 % za platby kartou + 0,20 % za investice; vyhodnocení po konci měsíce. Tarif Aktivní."
+          "conditions": "Základ 0,10 % + 3,90 % za platby kartou + 0,20 % za investice. Vyhodnocení po konci měsíce."
         },
         {
-          "product": "Bonusový spořicí účet – Aktivní (500 tis.–1 mil.)",
+          "product": "Bonusový spořicí účet Aktivní (500 tis. - 1 mil.)",
           "base_rate_pct": 0.1,
           "bonus_rate_pct": 3.0,
           "limit_czk": 1000000,
-          "conditions": "Celková max. sazba = základní 0,10 % + 2,90 % za platby kartou; investice 0,00 %. Tarif Aktivní. Nad limit 0,01 %."
+          "conditions": "Základ 0,10 % + 2,90 % za platby kartou; za investice 0,00 %. Vyhodnocení po konci měsíce. Nad limit 0,01 %."
         },
         {
-          "product": "Bonusový spořicí účet – Chytrý/jiný (do 500 tis.)",
+          "product": "Bonusový spořicí účet Chytrý/jiný (do 500 tis.)",
           "base_rate_pct": 0.1,
           "bonus_rate_pct": 4.2,
           "limit_czk": 500000,
-          "conditions": "Celková max. sazba = základní 0,10 % + 3,90 % za platby kartou + 0,20 % za investice. Tarif Chytrý nebo jiný běžný účet. Nad limit 0,01 %."
+          "conditions": "Chytrý účet nebo jiný běžný účet. Základ 0,10 % + 3,90 % za platby kartou + 0,20 % za investice. Nad limit 0,01 %."
         },
         {
           "product": "Základní spořicí účet",
@@ -69,7 +69,7 @@
       ],
       "fail_count": 0,
       "last_error": null,
-      "last_ok": "2026-10-26",
+      "last_ok": "2026-10-27",
       "pending": null
     },
     "Trinity Bank": {
@@ -79,18 +79,18 @@
           "base_rate_pct": 3.3,
           "bonus_rate_pct": 4.28,
           "limit_czk": 200000,
-          "conditions": "Nový vklad z jiné banky nebo hotovost na pobočce; nové i stávající klienti. Sazba garantovaná po celou dobu nabídky účtu. Zdroj: Finex.cz (třetí strana)."
+          "conditions": "Nový vklad z jiné banky nebo hotovost na pobočce, ne převody z Trinity Bank. Garantováno po dobu nabídky banky; celkový strop 30 mld. Kč."
         },
         {
           "product": "Narozeninový spořicí účet (nad 200 tis.)",
           "base_rate_pct": 3.3,
-          "bonus_rate_pct": null,
+          "bonus_rate_pct": 3.3,
           "limit_czk": null,
-          "conditions": "Zůstatek nad 200 tis. Kč je úročen základní sazbou, která se mění. Nový vklad je nutný. Zdroj: Finex.cz (třetí strana)."
+          "conditions": "Nový vklad z jiné banky nebo hotovost na pobočce, ne převody z Trinity Bank. Základní sazba se mění, garantována jen krátce dopředu."
         }
       ],
       "fail_count": 0,
-      "last_ok": "2026-10-26",
+      "last_ok": "2026-10-27",
       "last_error": null,
       "pending": null
     },
@@ -101,40 +101,40 @@
           "base_rate_pct": null,
           "bonus_rate_pct": 3.5,
           "limit_czk": 200000,
-          "conditions": "Bonusová sazba platí pro jedno Fio konto fyzické osoby; při více účtech se uplatní na nejstarším."
+          "conditions": "Platí jen pro jedno Fio konto fyzické osoby; pokud jich máte více, uplatní se na nejstarším. Aktuální sazba až 3,5 % p.a."
         },
         {
           "product": "Fio konto (nad 200 tis.)",
           "base_rate_pct": null,
           "bonus_rate_pct": null,
           "limit_czk": null,
-          "conditions": "Sazba pro zůstatek nad 200 000 Kč na stránce uvedena není."
+          "conditions": "Sazba pro zůstatek nad 200 tis. Kč na stránce uvedena není."
         }
       ],
       "fail_count": 0,
-      "last_ok": "2026-10-26",
+      "last_ok": "2026-10-27",
       "last_error": null,
       "pending": null
     },
     "Partners Banka": {
       "products": [
         {
+          "product": "Spořicí účet Partners Banka (Pro dva a Pro rodinu)",
+          "base_rate_pct": 2.03,
+          "bonus_rate_pct": 3.2,
+          "limit_czk": null,
+          "conditions": "Bez podmínek v balíčku Pro dva nebo Pro rodinu, které jsou placené (měsíční poplatky za vedení běžného účtu). Bez minimálního ani maximálního zůstatku."
+        },
+        {
           "product": "Spořicí účet Partners Banka (Pro jednoho)",
           "base_rate_pct": 2.03,
           "bonus_rate_pct": 3.2,
           "limit_czk": null,
-          "conditions": "První 3 měsíce bez podmínek. Poté každý měsíc min. 5 plateb kartou a po celý měsíc aktivní Hlídání minimálního zůstatku (min. 20 000 Kč) na běžném účtu."
-        },
-        {
-          "product": "Spořicí účet Partners Banka (Pro dva / Pro rodinu)",
-          "base_rate_pct": null,
-          "bonus_rate_pct": 3.2,
-          "limit_czk": null,
-          "conditions": "Sazba bez dalších podmínek trvale. Vyžaduje balíček Pro dva nebo Pro rodinu s měsíčním poplatkem za vedení běžného účtu."
+          "conditions": "Pro jednoho: každý měsíc min. 5 plateb kartou a po celý měsíc aktivní Hlídání minimálního zůstatku (20 000 Kč); max. 2 nedorovnání. Jinak 2,03 %."
         }
       ],
       "fail_count": 0,
-      "last_ok": "2026-10-26",
+      "last_ok": "2026-10-27",
       "last_error": null,
       "pending": null
     },
@@ -156,9 +156,38 @@
         }
       ],
       "fail_count": 0,
-      "last_ok": "2026-10-26",
+      "last_ok": "2026-10-27",
       "last_error": null,
-      "pending": null
+      "pending": [
+        {
+          "product": "Spořicí účet KB (nad 200 tis. do 1 mil.)",
+          "base_rate_pct": 0.01,
+          "bonus_rate_pct": 3.5,
+          "limit_czk": 1000000,
+          "conditions": "Noví klienti: založit tarif se spořicím účtem (nebo do 3 měsíců). Stávající: převod min. 100 000 Kč z jiné banky do 30 dnů od aktivace. Bonus 6 měsíců."
+        },
+        {
+          "product": "Spořicí účet KB (do 200 tis., tarif Start)",
+          "base_rate_pct": 0.1,
+          "bonus_rate_pct": 1.1,
+          "limit_czk": 200000,
+          "conditions": "Klienti se spořicím účtem nebo tarifem Start; bonus 1,00 % p.a. nad základní sazbu. Sazba se může měsíčně měnit."
+        },
+        {
+          "product": "Spořicí účet KB (do 200 tis., tarif Standard)",
+          "base_rate_pct": 0.1,
+          "bonus_rate_pct": 1.6,
+          "limit_czk": 200000,
+          "conditions": "Klienti s tarifem Standard; bonus 1,50 % p.a. nad základní sazbu. Sazba se může měsíčně měnit."
+        },
+        {
+          "product": "Spořicí účet KB (do 200 tis., tarif Komfort/Exclusive)",
+          "base_rate_pct": 0.1,
+          "bonus_rate_pct": 2.6,
+          "limit_czk": 200000,
+          "conditions": "Klienti s tarifem Komfort nebo Exclusive; bonus 2,50 % p.a. nad základní sazbu. Sazba se může měsíčně měnit."
+        }
+      ]
     },
     "Air Bank": {
       "products": [
@@ -167,14 +196,14 @@
           "base_rate_pct": 0,
           "bonus_rate_pct": 3.2,
           "limit_czk": 300000,
-          "conditions": "Pravidelné spoření na spořicím účtu v Kč (pravidelné/drobné spoření nebo min. 1 000 Kč měsíčně). Účet založen od 16. 9. 2026 nebo po novém úročení."
+          "conditions": "Pravidelné spoření na spořicím účtu v Kč (funkce pravidelného nebo drobného spoření, nebo min. 1 000 Kč měsíčně). Účet založen od 16. 9. 2026 nebo po nastavení nového úročení."
         },
         {
           "product": "Spořicí účet v Kč (nové úročení, nad 300 tis.)",
           "base_rate_pct": 0,
           "bonus_rate_pct": 2.0,
           "limit_czk": null,
-          "conditions": "Bez podmínek 2,0 % p.a. na celý zůstatek; pro zůstatek nad 300 000 Kč. Účet založen od 16. 9. 2026 nebo po novém úročení."
+          "conditions": "Pravidelné spoření na spořicím účtu v Kč. Bez podmínek je sazba 2,0 % p. a. na celý zůstatek. Účet založen od 16. 9. 2026 nebo po nastavení nového úročení."
         },
         {
           "product": "Spořicí účet v Kč (původní úročení, do 300 tis.)",
@@ -188,15 +217,15 @@
           "base_rate_pct": 0,
           "bonus_rate_pct": 2.6,
           "limit_czk": 500000,
-          "conditions": "5 plateb kartou a příchozí platba alespoň 25 000 Kč nebo příchozí důchod v jakékoli výši. Účet založen do 15. 9. 2026 bez nového úročení."
+          "conditions": "5 plateb kartou Air Bank a příchozí platby alespoň 25 000 Kč nebo příchozí důchod. Účet založen do 15. 9. 2026 bez nastaveného nového úročení."
         }
       ],
       "fail_count": 0,
       "last_error": null,
-      "last_ok": "2026-10-26",
+      "last_ok": "2026-10-27",
       "pending": null
     }
   },
   "overtake": {},
-  "last_run": "2026-10-26"
+  "last_run": "2026-10-27"
 }
