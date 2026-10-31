@@ -83,6 +83,18 @@
     "Komerční banka": 3.5,
     "Air Bank": 3.2
    }
+  },
+  {
+   "date": "2026-10-31",
+   "banks": {
+    "mBank": 4.21,
+    "Raiffeisenbank": 4.2,
+    "Trinity Bank": 4.28,
+    "Fio Konto": 3.5,
+    "Partners Banka": 3.2,
+    "Komerční banka": 3.5,
+    "Air Bank": 3.2
+   }
   }
  ],
  "events": [
